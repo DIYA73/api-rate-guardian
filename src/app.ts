@@ -3,10 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 
 import { rateLimiter } from "./config/middlewares/rateLimiter";
-import { errorHandler } from "./config/middlewares/errorHandler";
 import { blockBannedIps } from "./config/middlewares/blockBannedIps";
-
-
+import { errorHandler } from "./config/middlewares/errorHandler";
 
 import adminRoutes from "./routes/admin.route";
 import healthRoute from "./routes/health.route";
@@ -17,13 +15,15 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// 🔒 SECURITY FIRST
+app.use(blockBannedIps);
 app.use(rateLimiter);
 
+// 🛣 Routes
 app.use("/", healthRoute);
 app.use("/admin", adminRoutes);
 
+// ❗ Error handler LAST
 app.use(errorHandler);
-app.use(blockBannedIps);
+
 export default app;
-
-
