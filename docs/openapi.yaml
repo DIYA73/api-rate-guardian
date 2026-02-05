@@ -1,6 +1,18 @@
 
+---
 
+## 🥉 3️⃣ DEPLOY (this makes you stand out)
 
+### Best choice for you: **Render**
 
-
-
+Steps:
+1. Push latest code to GitHub
+2. Go to https://render.com
+3. New → Web Service
+4. Connect GitHub repo
+5. Settings:
+   - Build: `npm install && npm run build`
+   - Start: `npm start`
+6. Add Redis:
+   - Render Redis OR Upstash
+7. Add env vars:

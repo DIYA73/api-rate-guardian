@@ -1,5 +1,14 @@
 import request from "supertest";
 import app from "../src/app";
+import { redis } from "../src/config/redis";
+
+beforeAll(async () => {
+  await redis.flushall(); // clean state
+});
+
+afterAll(async () => {
+  await redis.quit(); // prevent open handle warning
+});
 
 describe("Rate limiting", () => {
   it("blocks after too many requests", async () => {
@@ -10,6 +19,7 @@ describe("Rate limiting", () => {
     }
 
     const res = await agent.get("/health");
+
     expect([403, 429]).toContain(res.status);
   });
 });
