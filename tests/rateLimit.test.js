@@ -5,6 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("../src/app"));
+const redis_1 = require("../src/config/redis");
+beforeAll(async () => {
+    await redis_1.redis.flushall(); // clean state
+});
+afterAll(async () => {
+    await redis_1.redis.quit(); // prevent open handle warning
+});
 describe("Rate limiting", () => {
     it("blocks after too many requests", async () => {
         const agent = supertest_1.default.agent(app_1.default);

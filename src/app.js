@@ -6,21 +6,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const yamljs_1 = __importDefault(require("yamljs"));
 const rateLimiter_1 = require("./config/middlewares/rateLimiter");
 const blockBannedIps_1 = require("./config/middlewares/blockBannedIps");
 const errorHandler_1 = require("./config/middlewares/errorHandler");
 const admin_route_1 = __importDefault(require("./routes/admin.route"));
 const health_route_1 = __importDefault(require("./routes/health.route"));
 const app = (0, express_1.default)();
+// 🛡 Core security
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// 🔒 SECURITY FIRST
+// 🔒 GLOBAL PROTECTION (ORDER MATTERS)
 app.use(blockBannedIps_1.blockBannedIps);
 app.use(rateLimiter_1.rateLimiter);
 // 🛣 Routes
 app.use("/", health_route_1.default);
 app.use("/admin", admin_route_1.default);
+// 📄 Swagger docs
+const swaggerDoc = yamljs_1.default.load("./docs/openapi.yaml");
+app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDoc));
 // ❗ Error handler LAST
 app.use(errorHandler_1.errorHandler);
 exports.default = app;
