@@ -3,16 +3,12 @@
   "version": "1.0.0",
   "description": "Production-ready API rate limiting and abuse detection service",
   "main": "dist/server.js",
-  
-"scripts": {
-  "build": "tsc",
-  "start": "node dist/server.js",
-  "dev": "ts-node src/server.ts",
-  "test": "jest"
-}
-
-
-,
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "test": "jest"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
