@@ -1,18 +1,49 @@
+openapi: 3.0.0
 
----
+info:
+  title: API Rate Guardian
+  version: 1.0.0
+  description: Production-ready API rate limiting and abuse detection service
 
-## 🥉 3️⃣ DEPLOY (this makes you stand out)
+servers:
+  - url: http://localhost:4000
+    description: Local server
+  - url: https://api-rate-guardian.onrender.com
+    description: Production server
 
-### Best choice for you: **Render**
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Verify that the API is running
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
 
-Steps:
-1. Push latest code to GitHub
-2. Go to https://render.com
-3. New → Web Service
-4. Connect GitHub repo
-5. Settings:
-   - Build: `npm install && npm run build`
-   - Start: `npm start`
-6. Add Redis:
-   - Render Redis OR Upstash
-7. Add env vars:
+  /rate-limit/test:
+    get:
+      summary: Rate limit test endpoint
+      description: Used to test Redis-backed rate limiting
+      responses:
+        "200":
+          description: Request allowed
+        "429":
+          description: Too many requests
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
