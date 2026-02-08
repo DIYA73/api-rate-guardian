@@ -30,6 +30,19 @@ This project demonstrates **real-world backend engineering**, security patterns,
 
 ---
 
+## 🧱 Architecture
+
+Client → Express API  
+→ JWT Auth Middleware  
+→ Rate Limiter (Redis)  
+→ Admin Routes (JWT protected)  
+→ Redis (stats, bans, counters)
+
+Redis is used as a centralized store to ensure
+accurate rate limiting across instances.
+
+---
+
 ## 📸 Screenshots
 
 ### 🔑 Admin Login
@@ -43,7 +56,15 @@ This project demonstrates **real-world backend engineering**, security patterns,
 
 ---
 
+## 🚀 Live Demo
+
+https://api-rate-guardian-1.onrender.com
+
+> Note: Free Render instances may sleep when inactive.
+
 ## 📦 Installation (Local)
+
+---
 
 ```bash
 git clone https://github.com/DIYA73/api-rate-guardian.git
