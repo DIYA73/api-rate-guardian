@@ -1,42 +1,13 @@
-openapi: 3.0.0
+openapi: 3.0.3
 
 info:
   title: API Rate Guardian
   version: 1.0.0
-  description: Production-ready API rate limiting and abuse detection service
+  description: Secure API with rate limiting, Redis, and JWT admin auth
 
 servers:
-  - url: http://localhost:4000
-    description: Local server
-  - url: https://api-rate-guardian.onrender.com
-    description: Production server
+  - url: http://localhost:4001
 
-paths:
-  /health:
-    get:
-      summary: Health check
-      description: Verify that the API is running
-      responses:
-        "200":
-          description: Service is healthy
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: ok
-
-  /rate-limit/test:
-    get:
-      summary: Rate limit test endpoint
-      description: Used to test Redis-backed rate limiting
-      responses:
-        "200":
-          description: Request allowed
-        "429":
-          description: Too many requests
 
 components:
   securitySchemes:
@@ -47,3 +18,41 @@ components:
 
 security:
   - BearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: JWT token returned
+
+  /admin/dashboard:
+    get:
+      summary: Admin dashboard (HTML)
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Admin dashboard page
+
+  /admin/redis/stats:
+    get:
+      summary: Redis stats
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Redis info
