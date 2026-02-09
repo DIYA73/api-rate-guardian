@@ -1,43 +1,52 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+
+type RedisStats = {
+  redis: {
+    connected: boolean;
+    memory: string;
+    clients: number;
+    uptime: string;
+  };
+};
 
 export default function RedisPage() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<RedisStats | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/admin/redis/stats", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/redis/stats`, {
       credentials: "include",
     })
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      .then(res => res.json())
+      .then(setData);
   }, []);
 
-  if (loading) return <div className="p-6">Loading Redis stats…</div>;
+  if (!data) return <div className="p-6">Loading…</div>;
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Redis Stats</h1>
+      <h1 className="text-2xl font-bold mb-6">Redis Stats</h1>
 
-      <pre className="bg-black text-green-400 p-4 rounded text-sm overflow-auto">
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <Stat title="Connected" value={data.redis.connected ? "Yes" : "No"} />
+        <Stat title="Memory" value={data.redis.memory} />
+        <Stat title="Clients" value={String(data.redis.clients)} />
+        <Stat title="Uptime" value={data.redis.uptime} />
+      </div>
+
+      <pre className="bg-black text-green-400 p-4 rounded text-sm">
         {JSON.stringify(data, null, 2)}
       </pre>
+    </div>
+  );
+}
 
-    
-<Image
-  src="/screenshots/login.png"
-  alt="Login preview"
-  width={400}
-  height={250}
-  className="mt-4 rounded border"
-/>
-
+function Stat({ title, value }: { title: string; value: string }) {
+  return (
+    <div className="bg-white border rounded p-4 shadow">
+      <div className="text-gray-500 text-sm">{title}</div>
+      <div className="text-xl font-bold">{value}</div>
     </div>
   );
 }

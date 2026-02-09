@@ -1,31 +1,26 @@
-export default function Dashboard() {
+"use client";
+
+export default function DashboardPage() {
+  async function logout() {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    // redirect after cookie cleared
+    window.location.href = "/login";
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="font-semibold">Users</h2>
-          <p className="text-2xl mt-2">—</p>
-        </div>
-
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="font-semibold">API Requests</h2>
-          <p className="text-2xl mt-2">—</p>
-        </div>
-
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="font-semibold">Rate Limits</h2>
-          <p className="text-2xl mt-2">—</p>
-        </div>
-      </div>
-
-      <a
-        href="/redis"
-        className="inline-block mt-8 text-blue-600 underline"
+      <button
+        onClick={logout}
+        className="bg-red-600 text-white px-4 py-2 rounded"
       >
-        View Redis Stats →
-      </a>
+        Logout
+      </button>
     </div>
   );
 }

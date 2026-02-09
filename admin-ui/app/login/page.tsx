@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,10 +12,8 @@ export default function LoginPage() {
   async function login() {
     const res = await fetch("http://localhost:4000/auth/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // 🔥 REQUIRED FOR COOKIES
+      headers: { "Content-Type": "application/json" },
+      credentials: "include", // 🔥 IMPORTANT
       body: JSON.stringify({ email, password }),
     });
 
@@ -23,9 +22,7 @@ export default function LoginPage() {
       return;
     }
 
-    // ❌ DO NOT read token
-    // ❌ DO NOT set document.cookie
-
+    // ✅ backend sets cookie
     router.push("/dashboard");
   }
 
@@ -53,6 +50,16 @@ export default function LoginPage() {
         >
           Login
         </button>
+
+        {/* optional screenshot */}
+        <Image
+  src="/screenshots/login.png"
+  alt="Login preview"
+  width={400}
+  height={240}
+  className="mt-4 rounded border"
+/>
+
       </div>
     </div>
   );
