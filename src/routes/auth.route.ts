@@ -15,11 +15,14 @@ router.post("/login", (req, res) => {
 
   const token = jwt.sign(
     { role: "admin" },
-    process.env.JWT_SECRET as string,
+    process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
 
-  res.json({ token });
+  return res.json({
+    status: "ok",
+    token
+  });
 });
 
 export default router;
