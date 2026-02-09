@@ -1,10 +1,12 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
 const router = Router();
 
 /* LOGIN */
-router.post("/login", (req, res) => {
+router.post("/login", (req: Request, res: Response) => {
+
   const { email, password } = req.body;
 
   if (
@@ -30,7 +32,8 @@ router.post("/login", (req, res) => {
 });
 
 /* LOGOUT */
-router.post("/logout", (req, res) => {
+router.post("/logout", (req: Request, res: Response) => 
+{
   res.clearCookie("token", {
     httpOnly: true,
     sameSite: "lax",
