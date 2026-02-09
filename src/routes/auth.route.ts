@@ -3,11 +3,12 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 
+/* LOGIN */
 router.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   if (
-    username !== process.env.ADMIN_USER ||
+    email !== process.env.ADMIN_USER ||
     password !== process.env.ADMIN_PASS
   ) {
     return res.status(401).json({ error: "Invalid credentials" });
@@ -19,10 +20,24 @@ router.post("/login", (req, res) => {
     { expiresIn: "1h" }
   );
 
-  return res.json({
-    status: "ok",
-    token
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false, // true in production HTTPS
   });
+
+  res.json({ success: true });
+});
+
+/* LOGOUT */
+router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+  });
+
+  res.json({ success: true });
 });
 
 export default router;

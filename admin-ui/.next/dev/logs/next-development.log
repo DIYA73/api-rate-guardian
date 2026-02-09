@@ -1,5 +1,0 @@
-[00:00:00.603] Server  WARN    ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
-[00:00:00.651] Server  LOG     ✓ Ready in 514ms
-[00:00:05.146] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:19.855] Browser ERROR   unhandledRejection: TypeError: NetworkError when attempting to fetch resource.
-[00:04:59.040] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

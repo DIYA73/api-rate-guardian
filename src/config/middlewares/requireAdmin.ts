@@ -1,32 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export interface AuthRequest extends Request {
-  user?: any;
-}
-
 export function requireAdmin(
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const auth = req.headers.authorization;
+  const token = req.cookies?.token;
 
-  if (!auth || !auth.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Missing token" });
+  if (!token) {
+    return res.status(401).json({ error: "Not authenticated" });
   }
 
   try {
-    const token = auth.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
-
-    if ((decoded as any).role !== "admin") {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-
+    jwt.verify(token, process.env.JWT_SECRET!);
     next();
   } catch {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ error: "Invalid token" });
   }
 }
