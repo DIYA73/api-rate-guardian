@@ -1,58 +1,31 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-type RedisStats = {
-  status: string;
-  redis: {
-    connected: boolean;
-    memory: string;
-    clients: string;
-    uptime: string;
-  };
-};
-
 export default function Dashboard() {
-  const [data, setData] = useState<RedisStats | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("http://localhost:4000/admin/redis/stats", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  function logout() {
-    localStorage.removeItem("token");
-    location.href = "/";
-  }
-
   return (
-    <main className="p-10">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+    <div className="min-h-screen bg-gray-100 p-10">
+      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
 
-      {loading && <p>Loading...</p>}
+      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="font-semibold">Users</h2>
+          <p className="text-2xl mt-2">—</p>
+        </div>
 
-      {data && (
-        <pre className="bg-black text-green-400 p-4 rounded mb-4">
-          {JSON.stringify(data, null, 2)}
-        </pre>
-      )}
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="font-semibold">API Requests</h2>
+          <p className="text-2xl mt-2">—</p>
+        </div>
 
-      <button
-        onClick={logout}
-        className="px-4 py-2 bg-red-600 text-white rounded"
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="font-semibold">Rate Limits</h2>
+          <p className="text-2xl mt-2">—</p>
+        </div>
+      </div>
+
+      <a
+        href="/redis"
+        className="inline-block mt-8 text-blue-600 underline"
       >
-        Logout
-      </button>
-    </main>
+        View Redis Stats →
+      </a>
+    </div>
   );
 }
