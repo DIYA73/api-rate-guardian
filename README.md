@@ -46,21 +46,24 @@ accurate rate limiting across instances.
 ## 📸 Screenshots
 
 ### 🔑 Admin Login
-![Login](screenshots/login.png)
+![Admin Login](admin-ui/public/screenshots/login.png)
 
 ### 📊 Redis Stats
-![Redis Stats](screenshots/redis-stats.png)
+![Redis Stats](admin-ui/public/screenshots/redis-stats.png)
 
 ### 🧭 Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
+![Admin Dashboard](admin-ui/public/screenshots/admin-dashboard.png)
+
 
 ---
 
 ## 🚀 Live Demo
 
+Backend API:
 https://api-rate-guardian-1.onrender.com
 
-> Note: Free Render instances may sleep when inactive.
+> Admin UI runs locally or can be deployed separately (Vercel).
+
 
 ## 📦 Installation (Local)
 
